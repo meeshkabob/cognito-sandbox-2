@@ -1,4 +1,5 @@
 import { Component, ViewChild, ElementRef, OnInit } from "@angular/core";
+import { environment } from '../../environments/environment.tns';
 
 import { Cognito, UserSession } from 'nativescript-cognito';
 
@@ -14,7 +15,8 @@ export class LoginComponent implements OnInit {
   cognito: Cognito;
 
   ngOnInit() {
-    this.cognito = new Cognito("POOL_ID_HERE", "CLIENT_ID_HERE");
+    console.log(environment.poolId);
+    this.cognito = new Cognito(environment.poolId, environment.clientId);
   }
 
   async login() {
