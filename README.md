@@ -1,5 +1,7 @@
 # First thing's first
-Fill in the poolId and clientId in login.component.ts
+Create a file `src/environments/environment.ts` based on the file `environment.sample.ts` in the same directory.
+
+Install nativescript. All that jazz.
 
 # Getting Started
 Requires the nativescript-cognito plugin (https://github.com/papmodern/nativescript-cognito)
