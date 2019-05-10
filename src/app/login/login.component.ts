@@ -1,51 +1,6 @@
-import { Component, ViewChild, ElementRef } from "@angular/core";
-// require this to fix an issue with xhr event states
-// require('nativescript-nodeify');
+import { Component, ViewChild, ElementRef, OnInit } from "@angular/core";
 
-// register a user (here's a bit, but see the demo and https://github.com/aws/amazon-cognito-identity-js for details)
-// var AmazonCognitoIdentity = require('amazon-cognito-identity-js');
-// var CognitoUserPool = AmazonCognitoIdentity.CognitoUserPool;
-// var userPool = new CognitoUserPool({
-//     UserPoolId: 'us-east-1_urOvP1l03', 
-//     ClientId: '1v1lnj38t1pr9s868v709762jr'
-// });
-
- 
-// Modules, e.g. Webpack:
-var AmazonCognitoIdentity = require('amazon-cognito-auth-js');
-var CognitoAuth = AmazonCognitoIdentity.CognitoAuth;
-
-/*
-  TokenScopesArray
-  Valid values are found under:
-  AWS Console -> User Pools -> <Your user pool> -> App Integration -> App client settings
-  Example values: ['profile', 'email', 'openid', 'aws.cognito.signin.user.admin', 'phone']
- 
-  RedirectUriSignOut 
-  This value must match the value specified under:
-  AWS Console -> User Pools -> <Your user pool> -> App Integration -> App client settings -> Sign out URL(s)
-*/
-var authData = {
-    UserPoolId: 'USERPOOLID', 
-    ClientId: 'CLIENTID',
-    AppWebDomain : '/',
-    TokenScopesArray : [], // e.g.['phone', 'email', 'profile','openid', 'aws.cognito.signin.user.admin'],
-    RedirectUriSignIn : '/items',
-    RedirectUriSignOut : '/',
-    // IdentityProvider : '<TODO: add identity provider you want to specify>', // e.g. 'Facebook',
-    // AdvancedSecurityDataCollectionFlag : '<TODO: boolean value indicating whether you want to enable advanced security data collection>', // e.g. true
-    //     Storage: '<TODO the storage object>' // OPTIONAL e.g. new CookieStorage(), to use the specified storage provided
-};
-var auth = new CognitoAuth(authData);
-
-auth.userhandler = {
-	onSuccess: function(result) {
-		console.log("Sign in success");
-	},
-	onFailure: function(err) {
-		console.log("Error!");
-	}
-};
+import { Cognito, UserSession } from 'nativescript-cognito';
 
 @Component({
   selector: "ns-login",
@@ -53,11 +8,24 @@ auth.userhandler = {
   templateUrl: "./login.component.html",
   styleUrls: ["./login.component.css"]
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   @ViewChild("username") username: ElementRef;
   @ViewChild("password") password: ElementRef;
+  cognito: Cognito;
 
-  submit() {
-    console.log('submit');
+  ngOnInit() {
+    this.cognito = new Cognito("POOL_ID_HERE", "CLIENT_ID_HERE");
+  }
+
+  async login() {
+    try {
+        const data: UserSession = await this.cognito.authenticate('mgrasso@anthemengineering.com', 'P@ssw0rd!');
+        let details = await this.cognito.getUserDetails();
+        console.log(data);
+        console.log(details.attributes);
+        console.log(details.settings);
+    } catch (e) {
+        console.log('login failure', e);
+    }
   }
 }
