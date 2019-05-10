@@ -12,7 +12,7 @@ Usual build procedure
 ```
 tns platform add android
 npm i
-npm run build android
+tns run build android
 ```
 
 Then to run
