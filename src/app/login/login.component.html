@@ -1,0 +1,18 @@
+
+
+<FlexboxLayout class="page">
+  <StackLayout class="form" width="300">
+    <StackLayout class="input-field">
+      <TextField #username class="input" hint="Username"></TextField>
+    </StackLayout>
+  
+    <StackLayout class="input-field">
+      <TextField #password class="input" hint="Password"></TextField>
+    </StackLayout>
+  
+
+    <Button text="Log In" class="btn btn-primary" (tap)="submit()"></Button>
+  </StackLayout>
+
+  <Label text="Don’t have an account?"></Label>
+</FlexboxLayout>
